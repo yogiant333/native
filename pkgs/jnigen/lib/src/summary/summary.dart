@@ -36,7 +36,7 @@ class SummaryParseException implements Exception {
 /// script before this API is used.
 class SummarizerCommand {
   SummarizerCommand({
-    this.command = "java -jar .dart_tool/jnigen/ApiSummarizer.jar",
+    this.command = "java -jar -Dfile.encoding=437 .dart_tool/jnigen/ApiSummarizer.jar",
     List<Uri>? sourcePath,
     List<Uri>? classPath,
     this.extraArgs = const [],
