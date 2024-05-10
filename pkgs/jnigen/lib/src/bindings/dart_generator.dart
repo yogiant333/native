@@ -143,6 +143,33 @@ import "dart:ffi" as ffi;
 import "package:jni/internal_helpers_for_jnigen.dart";
 import "package:jni/jni.dart" as jni;
 
+final class \$FailureType extends jni.JObjType {
+  const \$FailureType();
+
+  @override
+  String get signature => r"Lkotlin/Result\$Failure;";
+
+  @override
+  jni.JObjType get superType => const jni.JObjectType();
+
+  @override
+  final superCount = 1;
+
+  @override
+  int get hashCode => (\$FailureType).hashCode;
+
+  @override
+  bool operator ==(Object other) {
+    return other.runtimeType == (\$FailureType) && other is \$FailureType;
+  }
+
+  @override
+  jni.JObject fromRef(ffi.Pointer<ffi.Void> ref) {
+    throw UnimplementedError();
+  }
+}
+
+
 ''';
 
   // Sort alphabetically.
@@ -1308,8 +1335,12 @@ class _MethodGenerator extends Visitor<Method, void> {
     $callExpr;
     final \$o = $_jPointer.fromAddress(await \$p.first);
     final \$k = $returnTypeClass.getClass().reference;
-    if (!$_jni.Jni.env.IsInstanceOf(\$o, \$k)) {
-      throw "Failed";
+    final \$k2 = const \$FailureType().getClass().reference;
+    if (!$_jni.Jni.env.IsInstanceOf(\$o, \$k) || jni.Jni.env.IsInstanceOf(\$o, \$k2)) {
+      throw jni.JString.fromRef(\$o)
+          .toString()
+          .replaceAll('Failure(java.lang.Exception: ', '')
+          .replaceAll(')', '');
     }
     return $returning;
   }
